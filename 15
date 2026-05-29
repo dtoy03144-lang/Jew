@@ -1,19 +1,18 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
-setfpscap(25)
 wait(2.4)
+
 local ok, result = pcall(function()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/dtoy03144-lang/D1/refs/heads/main/NiceHub"))()
 end)
-local blacklist2={"benayaop9005"}
-if table.find(blacklist2,game.Players.LocalPlayer.Name) then return end
+
 local SettingsFile = "nicehubsettings2.json"
 
 local states = {
-	AutoFarm = true,
+	AutoFarm = false,
 	IsIn = false,
-	Hop = true,                    -- חשוב! היה חסר
+	Hop = false,                    -- חשוב! היה חסר
 	AutoFarmEvents = {
-		["FLOOD"] = false,
+		["FLOOD"] = true,
 		["UFO"] = false,
 		["WITCH"] = false,
 		["BACON"] = false,
@@ -123,112 +122,108 @@ if not isfile(SettingsFile) then
 	SaveSettings()
 end
 local ids={
-	
-  "9a1b50be-d792-4f05-b484-2533c17c4bf0",
-        "f80a1413-c412-4449-a6a1-1644a7d7b704",
-        "7eef655f-f05b-466c-acce-6cb153362ba7",
-        "e4eaac1b-894c-4b88-be59-f2638f9f79f4",
-        "7ed98122-05b9-4eab-ad44-b75e3b138263",
-        "5697f840-3903-4d9d-b2db-ef58cef67dc3",
-        "b8291dc5-eaa4-4806-ae90-3b9506a7e703",
-        "b048079e-c539-41d2-8f5e-94c1e5b6c07a",
-        "a4df9766-636e-41e5-bc0b-5095cc8127f8",
-        "ce6b1b69-6803-4993-bb2c-d89733cb9c5b",
-        "a794a6f0-d18d-4e73-a5fc-db2081fff746",
-        "ef96c35b-66b1-4480-b239-508d5114dcc8",
-        "e0c9af3e-ca1f-4c05-8c63-8d1206cc33f7",
-        "73b7d59b-0f67-475b-8612-6e727c89ddd4",
-        "e3270c98-3ed6-47ab-8be4-680aad494a7d",
-        "8bc39c31-9c16-4de4-8f1f-1c3f7c748867",
-        "2cf2b20c-a6e5-473e-9a11-32013a459f83",
-        "9c57dbb7-95b0-4dfc-a91f-bad4e2b34625",
-        "358d11c8-d1f6-442c-bb33-20eaecbcc237",
-        "41678104-81e7-4eec-9808-a6f87715b4ff",
-        "3754d03c-5e5a-41c2-9670-6af4e79c9c32",
-        "05258d0b-20ec-4c66-9e0d-a60f3a4401b3",
-        "1ae42064-4dc3-4de7-8c6c-5103483b95b7",
-        "06e1c06f-5975-48ef-b1e8-e05877ad3acb",
-        "68f71282-e8a8-4000-a12b-d529c57f43ab",
-        "b6871a0a-d557-4693-a0e9-ffd40cfebb30",
-        "5a62c0dc-f1df-4bf0-ac06-4863f064a980",
-        "c5fa10a3-9954-45f3-8fda-fed53463c9d0",
-        "d7cea3ee-9311-4908-9a21-a1651eac7492",
-        "f55c5bd9-3919-4dab-80d4-0678ab2d84fd",
-        "0d508f8b-a1a0-4eee-91ee-b3b759f919a7",
-        "0e084ba8-5cd8-4594-80ab-798f4f6775e6",
-        "1d051e0b-8a5b-4915-9970-60934e017293",
-        "0607ef4d-bab7-4255-83db-316f37c1f999",
-        "2f69e707-f7b8-4b09-aecc-ee2af8873135",
-        "f7f4743a-d622-4299-8b10-d056c641dbe8",
-        "3d392374-f2b1-42b9-bf34-9b75c7c5409f",
-        "6af8bfb8-751f-4fce-a203-69fd58b4aa88",
-        "48549c9f-01c9-48aa-b7b6-5d33499e7150",
-        "810c0607-5949-4c31-aeac-8560bee41a6c",
-        "cd895583-4a6b-4479-a22b-91509f8367f9",
-        "e8b2d9fc-6351-4d8b-9bd4-00c0acc74428",
-        "14aed22a-e6de-44c3-9347-c77b9533891d",
-        "0b8984a3-0a48-4afa-ba01-de7deb79bf10",
-        "6f721b23-13c6-4946-92c2-e115278c7cf0",
-        "b67da13b-3ed1-44b5-b869-1ee19feb12b8",
-        "c8bb0c3e-768a-48f9-a278-43e534e41161",
-        "d0974e13-a968-425c-b60e-696df1ffcebe",
-        "7f019cb4-5ad3-444b-a847-29c8a55d479e",
-        "7986d29e-5905-4664-b1ee-2728703b871c",
-        "5004bf88-e326-4c67-951e-5681e9fd9a30",
-        "ab0be3dd-f043-4dc7-87c3-dd30b4b828b7",
-        "88d9c43f-eec7-4599-b4fc-1198999849d0",
-        "114031cb-1ea1-4361-8a69-ed4619ba7b6f",
-        "7fbe77fa-950c-4084-9927-e7f83f9eeadf",
-        "5148826b-8344-4d60-b93c-bd8fd9d0586f",
-        "c7f5c2f6-b653-49f7-911d-b4c0cecfc1d0",
-        "d8bdba46-c9c5-4d8b-9363-844e65d6ac20",
-        "62e1a33f-9ce5-4751-96b5-8fa7b7704573",
-        "67955433-b55e-4c14-9a88-fc2261d266c8",
-        "ac8696a4-df91-48c3-8273-308c91b789c5",
-        "817fbf7e-cf43-46a2-a55a-7371f4760194",
-        "2731f7fe-376b-4716-9410-f1aa9504bd65",
-        "c0ababba-3a6b-4644-9ab8-74d2739b60f7",
-        "ad21cc0a-929f-41d4-ad23-0c679523bd03",
-        "7bdca491-39de-40d1-ad4c-4f4d2f4e533a",
-        "ee549a87-b736-4b93-aae9-45816b9be2c9",
-        "50f80d0a-08d9-44fc-abe1-5c44f03c36a0",
-        "098ec412-4262-4be8-ac68-048b391b5ac5",
-        "1a5c2ced-6c7e-4611-acad-919bfc867abf",
-        "938a89d3-a362-47e1-8653-eb17910e7598",
-        "cd93eee3-789c-49b5-bfa4-e170fd5e3618",
-        "e1a402ac-fed6-409d-9d3f-e0640221e520",
-        "180cd5eb-7a02-4557-8acd-1c5f706d9d8d",
-        "69777f57-de9c-47c5-b094-bd296de6e172",
-        "fa2c97bb-2315-4be8-abe4-19b98f87453d",
-        "c19f32f5-1655-4736-89f8-4b3226f58edc",
-        "742b8527-3e49-4ef2-bc29-9718f0bd5eb7",
-        "489a8de1-fad3-4cb7-9c62-f4ec3ed12d06",
-        "ee45dc13-d53c-4976-8d09-63caec79d04d",
-        "00a637a1-2f29-4509-8d08-772111b775ac",
-        "750d4d27-ad2c-4d74-b1cc-6f5486910a14",
-        "43ecbdf8-af43-46df-8fe1-3b17774cb258",
-        "01d454ab-6f76-4658-81fe-9ea122d4a639",
-        "ee8eff31-0bdb-4c09-a5c2-ff01e1b910b2",
-        "c846e1d8-c151-41ee-bdf2-c00a43fd4319",
-        "12bca2f7-e69c-443e-8832-67ac53214d00",
-        "2daad721-0d9c-4bd3-91f3-5bf213053d39",
-        "69dfc8b7-d31f-4ff8-8b1c-c917644ea034",
-        "969c7981-2afd-4279-8319-fbd692fbbca5",
-        "c570f869-4a7c-4d87-af78-1b456c0c0ad7",
-        "b34e2263-dd8f-4170-bd20-d71056757c1c",
-        "6575fb14-8c92-4ea7-8b26-62495bd95aee",
-        "3035ac84-7895-41f1-8717-9d84c6a7c459",
-        "7c163730-60c7-4e6e-8f1d-008510d9b59a",
-        "eaa83235-e2e5-49a2-8f8c-12761941ca03",
-        "d127f441-1a0f-42c4-9087-ed32ca8efd17",
-        "80130b83-7b29-476e-8c47-fd22b2785df2",
-        "5bcb40e7-acf0-44e2-b408-805ee60d92fb",
+	"7f0fd00c-0e40-452b-bc9e-2ac9af2d8dbb",
+	"f90ae7f5-e029-44cc-92bf-4741b38ea53a",
+	"92fb963e-ebf4-4dc8-8e26-262e276614b1",
+	"22982840-9f02-460f-a9de-b3a049648fee",
+	"37b4a552-a21e-4c59-b86a-585e4c8703b0",
+	"d8dd40c9-f7f2-45c0-ae25-d0203ec8427a",
+	"1e301daf-01a0-4591-84b6-6fed7a3f62ea",
+	"6dbbe4d2-66b8-47d2-a73a-509b5018e301",
+	"cd8144e0-1a7c-4a4f-b885-dd9db0239ae5",
+	"3ecfa0aa-8842-4bfd-9615-ca75c3f54639",
+	"7dfe0abb-b907-4c95-8559-1e0daace930c",
+	"0c433d01-0ebb-422f-80f9-98cf83c3f536",
+	"ee2e315c-c7dc-4fd7-8bbd-2e17233cfbae",
+	"5dff5ce5-2aa5-41a4-8ec4-09d903de4e67",
+	"e553be3f-ffa7-4738-b852-3b6bcb5a2621",
+	"ac040cb0-c774-4d57-bce0-5f69caa53e5f",
+	"2a1f5e30-cb53-4b37-869d-894ce0d4a3a2",
+	"a912443f-42c9-40b0-8058-6e041c8b7810",
+	"a46c0bb3-58c3-43a9-8134-4ff6fc789806",
+	"39cc85e9-9999-42f4-bd99-650cafe09af5",
+	"f394c528-bff5-4020-96d3-f8cd30917ef6",
+	"e55405c7-80e4-4216-91f6-5cf612bbd9e0",
+	"0b365837-b9a7-4971-bff0-2ede7897590c",
+	"d46b7332-62af-422b-9399-faed7b3b4362",
+	"3560eaf3-9794-4114-9d4b-52f8e6be6953",
+	"d34955b6-8d4d-4ce3-b2c0-475980985822",
+	"b78ebbe2-21c0-4079-b279-fe304399b95e",
+	"8303544d-96ef-4487-8f10-a5d987f206cc",
+	"a329c484-daf5-4412-aec4-0f1eb909b4dc",
+	"c3878c98-7456-4c57-bb41-1dc1044c9606",
+	"bfda3da2-f442-46ec-aad5-4751d1929ddc",
+	"6e77836b-2a4a-4b1d-9adc-f67e02af71f6",
+	"bb734016-ed17-4685-9729-c21b09114550",
+	"eb3b90d8-0220-4ddd-b9bc-5a2bcf81360d",
+	"25b93761-57a2-4201-abbb-4726067a03be",
+	"17b6a325-2e40-4da6-b703-e99fc1847234",
+	"7266b597-7dcd-4ede-8100-ed6644ae5a9d",
+	"deee5271-8372-4be5-a5a1-6a91e792e163",
+	"20fd0f5c-f74a-44ff-8c65-a96462cbd5cc",
+	"507b5492-6f51-4a92-aafb-40e32387d1aa",
+	"dd57c35a-c87c-48a7-a01c-cbb3f3be6716",
+	"568a05a9-2d5c-4f34-8526-af7324f708b5",
+	"218c464e-b9b3-479b-9654-f9cea81ad9a7",
+	"97b6e117-46fc-4902-91c3-7a2a19746748",
+	"7f89049b-5700-47c2-9696-8268884b4634",
+	"ff90fc06-947e-4c35-bb1b-be2c09627288",
+	"d6bdab84-bbcb-4a8f-ae8e-ef660990e156",
+	"74b24355-3966-4efd-b843-445a793f5f23",
+	"46d4ed78-d177-4ff6-98b8-5d132f01f897",
+	"49356f0e-02db-4add-85e3-f3ac01b3aa84",
+	"88473b09-3152-4770-abb0-ab8e64e98094",
+	"a8b5ed2a-91da-4b6e-a6ae-f1b2a599a115",
+	"495dcce4-1252-4717-af75-b81dad3a8fe7",
+	"0b0e4b76-c727-4751-b7d9-0a9f9c1a1213",
+	"33e30a5e-29ed-4522-8acf-a3cf129b4553",
+	"9ad84fe4-3275-47a6-b987-ef8b125776e7",
+	"7246c261-db56-4b70-a0b1-1d26e91829be",
+	"73d2159b-bf54-4c9f-8956-f04bfc4af706",
+	"9ad9f015-608e-40bf-adac-9037f2a2b6a2",
+	"3e6837e1-93e6-442a-87c2-1ff8b35a13e2",
+	"c1d9f304-af38-40df-8bce-ea01342e5bb4",
+	"71c86802-a13a-4ab5-b2bd-f2dae97b2ad2",
+	"e52de9ca-cbd9-4494-9a7a-a978c6d3466d",
+	"68566ad7-9181-4057-ad74-fb34bb6097c4",
+	"6394ff0c-ae27-498b-953b-816eb226e90e",
+	"db384176-11d4-4674-b833-11b9b8209f97",
+	"45a3537d-2b65-47af-a6b6-6e6c4b1c21be",
+	"0f68c298-acb2-4a1a-ad80-6fa8cac47ed2",
+	"0c474e49-1559-4ab5-94a1-b2814e6f8ef6",
+	"949ec13f-b5d0-4916-ae8c-078e4a76d3dd",
+	"d1cf58c2-a321-46c7-bd52-37689399325c",
+	"8a0d69bc-a4ea-4b20-a529-4e751dc5c701",
+	"6b6e7a37-ef86-4a8b-b039-febd7c1b6bd6",
+	"93191b69-3c37-4072-a9a6-6e57812e0e5c",
+	"e86546d4-3853-4687-86ef-0a50a09960de",
+	"04e0bb45-d60d-450e-b307-0450c772d5fc",
+	"07e76c57-a23d-482e-960c-dfdb3621af77",
+	"5dd33913-e1e0-4998-8fe3-58a91e04c3d0",
+	"9a5948a0-0f82-4c95-9dff-2c2c43d8a5dd",
+	"965e4f2a-958d-45b9-a66b-07f93646c523",
+	"66b7200a-0dd5-4d55-b307-20b3739aaed4",
+	"6f856c99-3fbc-4fda-8d23-96631eb0d027",
+	"46e29aba-cbfa-4026-ad35-83a876a0c584",
+	"162fcc1f-ec22-4b6e-a299-f6f35d39d4e5",
+	"eedbe611-683e-4f16-8c32-d3c47ede4e64",
+	"728c8b29-5bd1-4773-9809-288e49ac8935",
+	"20e3fb09-1dfc-41a5-9fae-612a5d6357bf",
+	"a91afb66-5646-4253-b215-f253c8ddd395",
+	"287c08e4-c170-4aff-9ae9-ede1fa40a434",
+	"71da1985-7f44-4bf1-bd23-d836a68fa9c5",
+	"60d5f369-efc2-4601-86da-5e8fc843d5af",
+	"c231f21f-f4d1-498c-b779-c92be1b495ad",
+	"da114524-0359-41e8-800e-9e8da8629e1f",
+	"8e9563c1-4f8a-4aa7-b50f-6d41aaa04679",
+	"1982b7f6-3624-452a-a91f-5970c88c5f33",
+	"b722e43c-0fc5-4bec-8c41-47a64ebca9da",
+	"cb692fac-434c-4e5b-a587-75ead37fe6eb",
+	"e14ea964-4beb-44fd-83f5-c3706376e1db",
+	"116bc247-4123-4606-9cde-c68d15c4e3ad",
+	"876c0d0a-0dce-473a-9672-c6cbbd5fea02"
 }
 local function TPReturner()
-
-end
-	--[[
-
 	local foundAnything = ""
 	local actualHour = os.date("!*t").hour
 
@@ -237,24 +232,27 @@ end
 		local id = AllIDs[math.random(1, #AllIDs)]
 		if typeof(id) == "string" and id ~= game.JobId then
 			pcall(function()
-				--		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, id, Player)
+				game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, id, Player)
 			end)
-			task.wait()
+			task.wait(0.5)
 		end
 	end
 
 	-- If no saved servers worked, fetch new ones
 	repeat
+		
 
 
-
-		pcall(function()
-
-			game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ids[math.random(1, #ids)], game.Players.LocalPlayer)
-		end)
-		task.wait()
-
+				pcall(function()
+		
+					game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ids[math.random(1, #ids)], game.Players.LocalPlayer)
+				end)
+				task.wait(0.3)
+			
 	until foundAnything == ""
+end
+	--[[
+
 
 
 
@@ -391,12 +389,11 @@ local function WalkTo(targetPos)
 	task.wait(0.1)
 end
 local top ={
-
+"Beluga Beluga",
+"Tralaledon",
 	--"Dragonfrutina Dolphinita",
 	"Chicleteira Bicicleteira",
-	"Tralaledon",
-	"Los Primos",
-	"Ketupat Kepat"
+"Guerriro Digitale",
 }
 wait(1)
 local function v5(z,hop,list,power,ult)
@@ -418,14 +415,12 @@ local function v5(z,hop,list,power,ult)
 			:WaitForChild("Packages")
 			:WaitForChild("Network")
 			:WaitForChild("rev_KickEvent")
-			:FireServer(power*3, ult)
+			:FireServer(1, 1)
 		wait(0.4)
 	end		
 	if list then
 		local z = game.Players.LocalPlayer:GetAttribute("InGame")
 		if z then
-			local m = string.split(z,",")
-
 			local HttpService = game:GetService("HttpService")
 			local data = HttpService:JSONEncode({
 				content = "Item added: " .. z
@@ -439,6 +434,25 @@ local function v5(z,hop,list,power,ult)
 				})
 			end
 
+			local m = string.split(z,",")
+
+			if not table.find(list,m[1]) then
+
+
+
+
+
+
+				function Teleport()
+					while wait() do
+						pcall(function()
+							TPReturner()
+
+						end)
+					end
+				end
+				-- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+				Teleport()
 
 
 
@@ -450,45 +464,70 @@ local function v5(z,hop,list,power,ult)
 
 
 
-			if not table.find(top,m[1]) then
-				--[[
-				
-				game.Players.LocalPlayer.Character.Humanoid.Health = 0
-				wait(4)
-				states.IsIn=false
 
-				v5(1,true,top,power)
 
-				]]
+
+
+
+
+			end
+
+		else
+			function Teleport()
 				while wait() do
-					TPReturner()				
-				end	
+					pcall(function()
+						TPReturner()
+
+					end)
+				end
 			end
 
+			-- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+			Teleport()
 
 
 
 
-			wait(22)
-
-			wait(2)
-			root.CFrame *= CFrame.new(0,0,-250*3.5)
-
-			local startPos = root.Position
-			local targetPos = k.Position
-			local segments = 5
-			for i = 1, segments do
-				if not states.AutoFarm then break end
-				local nextPos = startPos:Lerp(targetPos, i / segments)
-				WalkTo(nextPos)
-			end
-
-			states.IsIn = false
-			if states.AutoFarm then
-				task.wait(0.5)
-				v5(1,hop,list,power)
-			end
 		end
+	end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	wait(27)
+	root.CFrame *= CFrame.new(0,0,-250*3.5)
+
+	local startPos = root.Position
+	local targetPos = k.Position
+	local segments = 5
+	for i = 1, segments do
+		if not states.AutoFarm then break end
+		local nextPos = startPos:Lerp(targetPos, i / segments)
+		WalkTo(nextPos)
+	end
+
+	states.IsIn = false
+	if states.AutoFarm then
+		task.wait(0.5)
+		v5(1,hop,list,power)
 	end
 end
 
@@ -549,10 +588,3 @@ local textbox =Webhook:AddTextbox(nil,{
 		Values.Webhook=d
 	end,
 })
-
-wait(15)
-if not game:GetService("Players"):GetAttribute("InGame") then
-	while wait() do
-	TPReturner()
-	end
-	end
