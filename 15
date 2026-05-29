@@ -1,13 +1,16 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 wait(2.4)
+
 local ok, result = pcall(function()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/dtoy03144-lang/D1/refs/heads/main/NiceHub"))()
 end)
+
 local SettingsFile = "nicehubsettings2.json"
+
 local states = {
 	AutoFarm = false,
 	IsIn = false,
-	Hop = false,
+	Hop = false,                    -- חשוב! היה חסר
 	AutoFarmEvents = {
 		["FLOOD"] = true,
 		["UFO"] = false,
@@ -16,20 +19,12 @@ local states = {
 		["Phantom"] = false,
 	}
 }
+
 local Fluent = result
 local PlaceID = game.PlaceId
 local ServerFile = "NiceHub_Servers.json"
 local AllIDs = {}
-local d=1
-game:GetService("UserInputService").InputBegan:Connect(function(z)
-	if z.KeyCode==Enum.KeyCode.Z then
-		d=d+0.1
-		print(d)
-	elseif z.KeyCode== Enum.KeyCode.Q then
-		d=d-0.1
-		print(d)
-	end
-end)
+
 -- JSON Library
 local JSON = (function()
 	local json = {}
@@ -57,6 +52,7 @@ local JSON = (function()
 		end
 	end
 	json.encode = encode
+
 	json.decode = function(str)
 		if not str or str == "" then return {} end
 		local success, result = pcall(function()
@@ -67,6 +63,7 @@ local JSON = (function()
 	end
 	return json
 end)()
+
 local function LoadServers()
 	local success, data = pcall(function()
 		return game:GetService("HttpService"):JSONDecode(readfile(ServerFile))
@@ -93,18 +90,23 @@ end
 if not isfile(SettingsFile) then
 	SaveSettings()
 end
+
 local function LoadSettings()
 	if not isfile(SettingsFile) then
-		return
+		return -- אין קובץ = משתמשים ב-defaults
 	end
+
 	local success, content = pcall(readfile, SettingsFile)
 	if not success or not content or content == "" then
 		return
 	end
+
 	local success2, decoded = pcall(function()
 		return game:GetService("HttpService"):JSONDecode(content)
 	end)
+
 	if success2 and decoded and typeof(decoded) == "table" then
+		-- כאן הטעינה האמיתית - רק מעדכן מה שיש בקובץ
 		for k, v in pairs(decoded) do
 			states[k] = v
 		end
@@ -115,6 +117,7 @@ local function LoadSettings()
 end
 LoadSettings()
 states.IsIn=false
+-- שמירה ראשונית אם הקובץ לא קיים
 if not isfile(SettingsFile) then
 	SaveSettings()
 end
@@ -221,21 +224,37 @@ local ids={
 local function TPReturner()
 	local foundAnything = ""
 	local actualHour = os.date("!*t").hour
+
+	-- First try saved servers
 	for i = #AllIDs, 1, -1 do
 		local id = AllIDs[math.random(1, #AllIDs)]
 		if typeof(id) == "string" and id ~= game.JobId then
 			pcall(function()
+				--		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, id, Player)
 			end)
 			task.wait(0.5)
 		end
 	end
+
+	-- If no saved servers worked, fetch new ones
 	repeat
+
+
+
 		pcall(function()
+
+			--	game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ids[math.random(1, #ids)], game.Players.LocalPlayer)
 		end)
 		task.wait(0.3)
+
 	until foundAnything == ""
 end
+	--[[
 
+
+
+
+	]]
 print(states.IsIn,15)
 local Window = Fluent:CreateWindow({
 	Title = "Nice Hub",
@@ -249,62 +268,90 @@ local Window = Fluent:CreateWindow({
 	Normalize = true,
 	SmallWindow = false
 })
+
 local Player = game.Players.LocalPlayer
 local listofanimals={
 	"Tralaledon",
 	"Pot Hotspot",
-	"Chicleteira Bicicleteira", "Beluga Beluga", "Anpali"
+	"Beluga Beluga"
 }
 local mutations = {
 	"Radioactive",
 	"Wet",
 	"Bacon",
-	"Rainbow",
-	"Astral"
+	"Rainbow"
 }
 local AutoPlay = Window:AddTab({ Title = "Auto Farm", Icon = "" })
+
 local kickval = 1000^3
 local localpoints =4* 1200*1000*1000
 local Values = {
 	Events= {
+
 		["UFO"]={
 			{Name="Girafa Celeste",Power = 0.16},
 			{Name="Guerriro",Power = 2},
 			{Name="Swag Soda",Power = 0.65},
 			{Name="Cacto Hipopotamo",Power=0.1,ultimate=0.0001}
+
 		},
-		["WITCH"] ={
+		["WITCH"]	={
+
 			{Name="Sigma Boy",Power=0.16},
 			{Name="Chef Crabracadabra",Power=0.02},
 			{Name="Octopusini Bluberini",Power=0.16},
+
 			{Name="Orcalero",Power=0.1,ultimate=0.01},
 		},
 		["BACON"] = {
 			{Name="Chicleteira Bicileteira",Power=2},
 			{Name="Agarrini La Palini",Power=0.65},
 			{Name="Trippi Troppi",Power=0.1,ultimate=0.0001},
+
 			{Name="Strawberry Elephant",Power=1.4},
+
 		},
+
+
+
 		["FLOOD"] ={
+
+
 			{Name="Tripi Tropi Tropa Tripa",Power = 0.5,ultimate=0.02},
+
+
+
+
+
+
 			{Name="Meowl",Power = 1.4},
 			{Name="Guest666",Power = 0.5},
 			{Name="1x1x1x1",Power = 0.3},
+
+
 		},
 		["Phantom"] ={
+
 			{Name="Tralaledon",Power =2.1},
+
+
+
 			{Name="Anpali Babel",Power = 2.1},
 			{Name="Los Primos",Power = 2.1},
 			{Name="Mastodontico Telepiedone",Power =2.1},
 		}
+
 	},
-	Webhook=""
+	Webhook="https://discord.com/api/webhooks/1506150511450001479/tMsnSSfydUUikSvKDJ884mHHHN7Nv6J3LDayC8UNYiC7wGHFW9kIQmV_sYK_jsd5Zhwz"
 }
+
 local k = CFrame.new(694.494019, 2.99803257, 233.208191,
 	-0.334869057, 1.51770652e-09, 0.942264676,
 	-5.07195663e-09, 1, -3.4132106e-09,
 	-0.942264676, -5.92210414e-09, -0.334869057)
+
 local PathfindingService = game:GetService("PathfindingService")
+
 local function WalkTo(targetPos)
 	local char = Player.Character
 	if not char then return end
@@ -350,15 +397,17 @@ local function WalkTo(targetPos)
 	task.wait(0.1)
 end
 local top ={
+
 	"Strawberry Elephant",
 	"Meowl",
+	--"Dragonfrutina Dolphinita",
 	"Chicleteira Bicicleteira",
 	"Guerriro Digitale",
 }
 wait(1)
 local function v5(z,hop,list,power,ult)
 	local r = z or 1
-	print(power,ult)
+	print(r,1)
 	if states.IsIn then return end
 	states.IsIn = true
 	local char = Player.Character
@@ -367,7 +416,7 @@ local function v5(z,hop,list,power,ult)
 		return
 	end
 	local root = char:WaitForChild("HumanoidRootPart")
-	root.CFrame = k
+	--	root.CFrame = k
 	task.wait(0.5)
 	for _=1,5,1 do
 		game:GetService("ReplicatedStorage")
@@ -377,35 +426,56 @@ local function v5(z,hop,list,power,ult)
 			:WaitForChild("rev_KickEvent")
 			:FireServer(power*3, ult)
 		wait(0.4)
-	end
+	end		
 	if list then
 		local z = game.Players.LocalPlayer:GetAttribute("InGame")
 		if z then
 			local m = string.split(z,",")
+
 			local HttpService = game:GetService("HttpService")
 			local data = HttpService:JSONEncode({
 				content = "Item added: " .. z
 			})
-			if Values.Webhook~="" then
 				request({
 					Url = Values.Webhook,
 					Method = "POST",
 					Headers = { ["Content-Type"] = "application/json" },
 					Body = data
 				})
-			end
-			wait(25.8*d)
-			
-			--m[2]~="Phantom" and 
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			wait(25.8)
 			local r = false
-			if not table.find(listofanimals, m[1]) then
+
+			-- בודק אם המוטציה לא קיימת או אם החיה לא קיימת
+			if   not table.find(listofanimals, m[1]) then
 				game.Players.LocalPlayer.Character.Humanoid.Health = 0
 				wait(3)
 				states.IsIn = false
 				v5(1, true, top, power)
+
 			end
+
 			wait(2)
 			root.CFrame *= CFrame.new(0,0,-250*3.8)
+
 			local startPos = root.Position
 			local targetPos = k.Position
 			local segments = 5
@@ -414,6 +484,7 @@ local function v5(z,hop,list,power,ult)
 				local nextPos = startPos:Lerp(targetPos, i / segments)
 				WalkTo(nextPos)
 			end
+
 			states.IsIn = false
 			if states.AutoFarm then
 				task.wait(0.5)
@@ -422,16 +493,19 @@ local function v5(z,hop,list,power,ult)
 		end
 	end
 end
+
 local sectionv2= AutoPlay:AddSection("Hop")
 sectionv2:AddToggle("Hop Method", {
 	Title = "Hop Method",
 	Default = true,
 	Callback = function(v)
+
 		states.Hop = v
 		SaveSettings()
 	end
 })
 local section = AutoPlay:AddSection("Auto Farm")
+
 section:AddToggle("AutoFarmToggle", {
 	Title = "Auto Farm",
 	Default = states.AutoFarm,
@@ -439,12 +513,19 @@ section:AddToggle("AutoFarmToggle", {
 		states.AutoFarm = v
 		SaveSettings()
 		if v and not states.IsIn then
-			v5(1,states.Hop,top,1)
+			--v5(1,states.Hop,top,1)
 		end
 	end
 })
+game:GetService("UserInputService").InputBegan:Connect(function(z)
+	if z.KeyCode==Enum.KeyCode.U then
+		v5(1,states.Hop,top,1)
+		states.IsIn=false
+	end
+end)
 local sectionv3= AutoPlay:AddSection("Auto Farm Events")
 for i, n5 in pairs(Values.Events) do
+	print(i)
 	sectionv3:AddToggle("AutoFarm "..tostring(i) .. " Event", {
 		Title = "Auto Farm "..i .." Event",
 		Default = states.AutoFarmEvents[i],
@@ -455,14 +536,17 @@ for i, n5 in pairs(Values.Events) do
 				for o,v57 in pairs(n5) do
 					if not game.Players.LocalPlayer.Backpack:FindFirstChild(v57.Name) then
 						print(v57.Name)
-						v5(1,states.Hop,{v57.Name, v57.Power},v57.Power,v57.Ultimate or 1)
-						wait(1)
+
+						--						v5(1,states.Hop,{v57.Name, v57.Power},v57.Power,v57.Ultimate or 1)
+						wait(1)	
 					end
 				end
+
 			end
 		end
 	})
 end
+
 local Webhook = Window:AddTab({ Title = "Manage Webhook", Icon = "" })
 local section = Webhook:AddSection("Add Webhook")
 local textbox =Webhook:AddTextbox(nil,{
