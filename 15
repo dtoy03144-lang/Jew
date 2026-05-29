@@ -436,14 +436,31 @@ local function v5(z,hop,list,power,ult)
 			local data = HttpService:JSONEncode({
 				content = "Item added: " .. z
 			})
-				request({
-					Url = Values.Webhook,
-					Method = "POST",
-					Headers = { ["Content-Type"] = "application/json" },
-					Body = data
-				})
-		
+			local function SendWebhook(data)
+				local success, response = pcall(function()
+					return request({
+						Url = Values.Webhook,
+						Method = "POST",
+						Headers = { ["Content-Type"] = "application/json" },
+						Body = game:GetService("HttpService"):JSONEncode(data)
+					})
+				end)
 
+				if success and response.Success then
+					print("✅ Webhook sent")
+				else
+					warn("❌ Webhook error:", response)
+				end
+			end
+
+			-- שימוש:
+			SendWebhook({
+				content =data,
+				embeds = {{
+					title = "Item Added",
+							color = 16711680
+				}}
+			})
 
 
 
@@ -467,7 +484,7 @@ local function v5(z,hop,list,power,ult)
 			-- בודק אם המוטציה לא קיימת או אם החיה לא קיימת
 			if   not table.find(listofanimals, m[1]) then
 				game.Players.LocalPlayer.Character.Humanoid.Health = 0
-				wait(3)
+				wait(4)
 				states.IsIn = false
 				v5(1, true, top, power)
 
