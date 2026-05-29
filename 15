@@ -1,0 +1,558 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+setfpscap(25)
+wait(2.4)
+local ok, result = pcall(function()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/dtoy03144-lang/D1/refs/heads/main/NiceHub"))()
+end)
+local blacklist2={"benayaop9005"}
+if table.find(blacklist2,game.Players.LocalPlayer.Name) then return end
+local SettingsFile = "nicehubsettings2.json"
+
+local states = {
+	AutoFarm = true,
+	IsIn = false,
+	Hop = true,                    -- חשוב! היה חסר
+	AutoFarmEvents = {
+		["FLOOD"] = false,
+		["UFO"] = false,
+		["WITCH"] = false,
+		["BACON"] = false,
+		["Phantom"] = false,
+	}
+}
+
+local Fluent = result
+local PlaceID = game.PlaceId
+local ServerFile = "NiceHub_Servers.json"
+local AllIDs = {}
+
+-- JSON Library
+local JSON = (function()
+	local json = {}
+	local function encode(v)
+		if type(v) == "table" then
+			local parts = {}
+			local isArray = #v > 0 and next(v, #v) == nil
+			if isArray then
+				for _, val in ipairs(v) do table.insert(parts, encode(val)) end
+				return "[" .. table.concat(parts, ",") .. "]"
+			else
+				for k, val in pairs(v) do
+					table.insert(parts, '"'..tostring(k)..'":'..encode(val))
+				end
+				return "{" .. table.concat(parts, ",") .. "}"
+			end
+		elseif type(v) == "string" then
+			return '"' .. v:gsub('"', '\\"') .. '"'
+		elseif type(v) == "boolean" then
+			return v and "true" or "false"
+		elseif type(v) == "number" then
+			return tostring(v)
+		else
+			return "null"
+		end
+	end
+	json.encode = encode
+
+	json.decode = function(str)
+		if not str or str == "" then return {} end
+		local success, result = pcall(function()
+			local cleaned = str:gsub(":true", ": true"):gsub(":false", ": false")
+			return loadstring("return " .. cleaned)()
+		end)
+		return success and result or {}
+	end
+	return json
+end)()
+
+local function LoadServers()
+	local success, data = pcall(function()
+		return game:GetService("HttpService"):JSONDecode(readfile(ServerFile))
+	end)
+	if success and typeof(data) == "table" then
+		AllIDs = data
+	else
+		AllIDs = {}
+		pcall(function()
+			writefile(ServerFile, game:GetService("HttpService"):JSONEncode(AllIDs))
+		end)
+	end
+end
+local function SaveSettings()
+	pcall(function()
+		writefile(SettingsFile, JSON.encode(states))
+	end)
+end
+local function SaveServers()
+	pcall(function()
+		writefile(ServerFile, game:GetService("HttpService"):JSONEncode(AllIDs))
+	end)
+end
+if not isfile(SettingsFile) then
+	SaveSettings()
+end
+
+local function LoadSettings()
+	if not isfile(SettingsFile) then
+		return -- אין קובץ = משתמשים ב-defaults
+	end
+
+	local success, content = pcall(readfile, SettingsFile)
+	if not success or not content or content == "" then
+		return
+	end
+
+	local success2, decoded = pcall(function()
+		return game:GetService("HttpService"):JSONDecode(content)
+	end)
+
+	if success2 and decoded and typeof(decoded) == "table" then
+		-- כאן הטעינה האמיתית - רק מעדכן מה שיש בקובץ
+		for k, v in pairs(decoded) do
+			states[k] = v
+		end
+		print("✅ Settings Loaded Successfully")
+	else
+		warn("❌ Failed to decode settings file")
+	end
+end
+LoadSettings()
+states.IsIn=false
+-- שמירה ראשונית אם הקובץ לא קיים
+if not isfile(SettingsFile) then
+	SaveSettings()
+end
+local ids={
+	
+  "9a1b50be-d792-4f05-b484-2533c17c4bf0",
+        "f80a1413-c412-4449-a6a1-1644a7d7b704",
+        "7eef655f-f05b-466c-acce-6cb153362ba7",
+        "e4eaac1b-894c-4b88-be59-f2638f9f79f4",
+        "7ed98122-05b9-4eab-ad44-b75e3b138263",
+        "5697f840-3903-4d9d-b2db-ef58cef67dc3",
+        "b8291dc5-eaa4-4806-ae90-3b9506a7e703",
+        "b048079e-c539-41d2-8f5e-94c1e5b6c07a",
+        "a4df9766-636e-41e5-bc0b-5095cc8127f8",
+        "ce6b1b69-6803-4993-bb2c-d89733cb9c5b",
+        "a794a6f0-d18d-4e73-a5fc-db2081fff746",
+        "ef96c35b-66b1-4480-b239-508d5114dcc8",
+        "e0c9af3e-ca1f-4c05-8c63-8d1206cc33f7",
+        "73b7d59b-0f67-475b-8612-6e727c89ddd4",
+        "e3270c98-3ed6-47ab-8be4-680aad494a7d",
+        "8bc39c31-9c16-4de4-8f1f-1c3f7c748867",
+        "2cf2b20c-a6e5-473e-9a11-32013a459f83",
+        "9c57dbb7-95b0-4dfc-a91f-bad4e2b34625",
+        "358d11c8-d1f6-442c-bb33-20eaecbcc237",
+        "41678104-81e7-4eec-9808-a6f87715b4ff",
+        "3754d03c-5e5a-41c2-9670-6af4e79c9c32",
+        "05258d0b-20ec-4c66-9e0d-a60f3a4401b3",
+        "1ae42064-4dc3-4de7-8c6c-5103483b95b7",
+        "06e1c06f-5975-48ef-b1e8-e05877ad3acb",
+        "68f71282-e8a8-4000-a12b-d529c57f43ab",
+        "b6871a0a-d557-4693-a0e9-ffd40cfebb30",
+        "5a62c0dc-f1df-4bf0-ac06-4863f064a980",
+        "c5fa10a3-9954-45f3-8fda-fed53463c9d0",
+        "d7cea3ee-9311-4908-9a21-a1651eac7492",
+        "f55c5bd9-3919-4dab-80d4-0678ab2d84fd",
+        "0d508f8b-a1a0-4eee-91ee-b3b759f919a7",
+        "0e084ba8-5cd8-4594-80ab-798f4f6775e6",
+        "1d051e0b-8a5b-4915-9970-60934e017293",
+        "0607ef4d-bab7-4255-83db-316f37c1f999",
+        "2f69e707-f7b8-4b09-aecc-ee2af8873135",
+        "f7f4743a-d622-4299-8b10-d056c641dbe8",
+        "3d392374-f2b1-42b9-bf34-9b75c7c5409f",
+        "6af8bfb8-751f-4fce-a203-69fd58b4aa88",
+        "48549c9f-01c9-48aa-b7b6-5d33499e7150",
+        "810c0607-5949-4c31-aeac-8560bee41a6c",
+        "cd895583-4a6b-4479-a22b-91509f8367f9",
+        "e8b2d9fc-6351-4d8b-9bd4-00c0acc74428",
+        "14aed22a-e6de-44c3-9347-c77b9533891d",
+        "0b8984a3-0a48-4afa-ba01-de7deb79bf10",
+        "6f721b23-13c6-4946-92c2-e115278c7cf0",
+        "b67da13b-3ed1-44b5-b869-1ee19feb12b8",
+        "c8bb0c3e-768a-48f9-a278-43e534e41161",
+        "d0974e13-a968-425c-b60e-696df1ffcebe",
+        "7f019cb4-5ad3-444b-a847-29c8a55d479e",
+        "7986d29e-5905-4664-b1ee-2728703b871c",
+        "5004bf88-e326-4c67-951e-5681e9fd9a30",
+        "ab0be3dd-f043-4dc7-87c3-dd30b4b828b7",
+        "88d9c43f-eec7-4599-b4fc-1198999849d0",
+        "114031cb-1ea1-4361-8a69-ed4619ba7b6f",
+        "7fbe77fa-950c-4084-9927-e7f83f9eeadf",
+        "5148826b-8344-4d60-b93c-bd8fd9d0586f",
+        "c7f5c2f6-b653-49f7-911d-b4c0cecfc1d0",
+        "d8bdba46-c9c5-4d8b-9363-844e65d6ac20",
+        "62e1a33f-9ce5-4751-96b5-8fa7b7704573",
+        "67955433-b55e-4c14-9a88-fc2261d266c8",
+        "ac8696a4-df91-48c3-8273-308c91b789c5",
+        "817fbf7e-cf43-46a2-a55a-7371f4760194",
+        "2731f7fe-376b-4716-9410-f1aa9504bd65",
+        "c0ababba-3a6b-4644-9ab8-74d2739b60f7",
+        "ad21cc0a-929f-41d4-ad23-0c679523bd03",
+        "7bdca491-39de-40d1-ad4c-4f4d2f4e533a",
+        "ee549a87-b736-4b93-aae9-45816b9be2c9",
+        "50f80d0a-08d9-44fc-abe1-5c44f03c36a0",
+        "098ec412-4262-4be8-ac68-048b391b5ac5",
+        "1a5c2ced-6c7e-4611-acad-919bfc867abf",
+        "938a89d3-a362-47e1-8653-eb17910e7598",
+        "cd93eee3-789c-49b5-bfa4-e170fd5e3618",
+        "e1a402ac-fed6-409d-9d3f-e0640221e520",
+        "180cd5eb-7a02-4557-8acd-1c5f706d9d8d",
+        "69777f57-de9c-47c5-b094-bd296de6e172",
+        "fa2c97bb-2315-4be8-abe4-19b98f87453d",
+        "c19f32f5-1655-4736-89f8-4b3226f58edc",
+        "742b8527-3e49-4ef2-bc29-9718f0bd5eb7",
+        "489a8de1-fad3-4cb7-9c62-f4ec3ed12d06",
+        "ee45dc13-d53c-4976-8d09-63caec79d04d",
+        "00a637a1-2f29-4509-8d08-772111b775ac",
+        "750d4d27-ad2c-4d74-b1cc-6f5486910a14",
+        "43ecbdf8-af43-46df-8fe1-3b17774cb258",
+        "01d454ab-6f76-4658-81fe-9ea122d4a639",
+        "ee8eff31-0bdb-4c09-a5c2-ff01e1b910b2",
+        "c846e1d8-c151-41ee-bdf2-c00a43fd4319",
+        "12bca2f7-e69c-443e-8832-67ac53214d00",
+        "2daad721-0d9c-4bd3-91f3-5bf213053d39",
+        "69dfc8b7-d31f-4ff8-8b1c-c917644ea034",
+        "969c7981-2afd-4279-8319-fbd692fbbca5",
+        "c570f869-4a7c-4d87-af78-1b456c0c0ad7",
+        "b34e2263-dd8f-4170-bd20-d71056757c1c",
+        "6575fb14-8c92-4ea7-8b26-62495bd95aee",
+        "3035ac84-7895-41f1-8717-9d84c6a7c459",
+        "7c163730-60c7-4e6e-8f1d-008510d9b59a",
+        "eaa83235-e2e5-49a2-8f8c-12761941ca03",
+        "d127f441-1a0f-42c4-9087-ed32ca8efd17",
+        "80130b83-7b29-476e-8c47-fd22b2785df2",
+        "5bcb40e7-acf0-44e2-b408-805ee60d92fb",
+}
+local function TPReturner()
+
+end
+	--[[
+
+	local foundAnything = ""
+	local actualHour = os.date("!*t").hour
+
+	-- First try saved servers
+	for i = #AllIDs, 1, -1 do
+		local id = AllIDs[math.random(1, #AllIDs)]
+		if typeof(id) == "string" and id ~= game.JobId then
+			pcall(function()
+				--		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, id, Player)
+			end)
+			task.wait()
+		end
+	end
+
+	-- If no saved servers worked, fetch new ones
+	repeat
+
+
+
+		pcall(function()
+
+			game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ids[math.random(1, #ids)], game.Players.LocalPlayer)
+		end)
+		task.wait()
+
+	until foundAnything == ""
+
+
+
+	]]
+print(states.IsIn,15)
+local Window = Fluent:CreateWindow({
+	Title = "Nice Hub",
+	SubTitle = "v2.0",
+	TabWidth = 160,
+	Size2 = UDim2.fromOffset(580, 460),
+	Acrylic = false,
+	Theme = "ScrollBar",
+	MinimizeKey = Enum.KeyCode.LeftControl,
+	Position = nil,
+	Normalize = true,
+	SmallWindow = false
+})
+
+local Player = game.Players.LocalPlayer
+
+local AutoPlay = Window:AddTab({ Title = "Auto Farm", Icon = "" })
+
+local kickval = 1000^3
+local localpoints =4* 1200*1000*1000
+local Values = {
+	Events= {
+
+		["UFO"]={
+			{Name="Girafa Celeste",Power = 0.16},
+			{Name="Guerriro",Power = 2},
+			{Name="Swag Soda",Power = 0.65},
+			{Name="Cacto Hipopotamo",Power=0.1,ultimate=0.0001}
+
+		},
+		["WITCH"]	={
+
+			{Name="Sigma Boy",Power=0.16},
+			{Name="Chef Crabracadabra",Power=0.02},
+			{Name="Octopusini Bluberini",Power=0.16},
+
+			{Name="Orcalero",Power=0.1,ultimate=0.01},
+		},
+		["BACON"] = {
+			{Name="Chicleteira Bicileteira",Power=2},
+			{Name="Agarrini La Palini",Power=0.65},
+			{Name="Trippi Troppi",Power=0.1,ultimate=0.0001},
+
+			{Name="Strawberry Elephant",Power=1.4},
+
+		},
+
+
+
+		["FLOOD"] ={
+
+
+			{Name="Tripi Tropi Tropa Tripa",Power = 0.5,ultimate=0.02},
+
+
+
+
+
+
+			{Name="Meowl",Power = 1.4},
+			{Name="Guest666",Power = 0.5},
+			{Name="1x1x1x1",Power = 0.3},
+
+
+		},
+		["Phantom"] ={
+
+			{Name="Tralaledon",Power =2.1},
+
+
+
+			{Name="Anpali Babel",Power = 2.1},
+			{Name="Los Primos",Power = 2.1},
+			{Name="Mastodontico Telepiedone",Power =2.1},
+		}
+
+	},
+	Webhook="https://discord.com/api/webhooks/1506150511450001479/tMsnSSfydUUikSvKDJ884mHHHN7Nv6J3LDayC8UNYiC7wGHFW9kIQmV_sYK_jsd5Zhwz"
+}
+
+local k = CFrame.new(694.494019, 2.99803257, 233.208191,
+	-0.334869057, 1.51770652e-09, 0.942264676,
+	-5.07195663e-09, 1, -3.4132106e-09,
+	-0.942264676, -5.92210414e-09, -0.334869057)
+
+local PathfindingService = game:GetService("PathfindingService")
+
+local function WalkTo(targetPos)
+	local char = Player.Character
+	if not char then return end
+	local root = char:WaitForChild("HumanoidRootPart")
+	local hum = char:WaitForChild("Humanoid")
+	local success = false
+	local attempts = 0
+	repeat
+		attempts += 1
+		local path = PathfindingService:CreatePath({
+			AgentRadius = 2.5,
+			AgentHeight = 5,
+			AgentCanJump = true,
+			WaypointSpacing = 4,
+			Costs = { Water = 25 }
+		})
+		path:ComputeAsync(root.Position, targetPos)
+		if path.Status == Enum.PathStatus.Success then
+			local waypoints = path:GetWaypoints()
+			for _, wp in ipairs(waypoints) do
+				if not states.AutoFarm then return end
+				hum:MoveTo(wp.Position)
+				if wp.Action == Enum.PathWaypointAction.Jump then
+					hum:ChangeState(Enum.HumanoidStateType.Jumping)
+				end
+				local reached = hum.MoveToFinished:Wait(4)
+				if not reached then
+					task.wait(0.3)
+					break
+				end
+			end
+			if (root.Position - targetPos).Magnitude < 15 then
+				success = true
+			end
+		else
+			hum:MoveTo(targetPos)
+			hum.MoveToFinished:Wait(5)
+			if (root.Position - targetPos).Magnitude < 15 then
+				success = true
+			end
+		end
+	until success or attempts >= 3
+	task.wait(0.1)
+end
+local top ={
+
+	--"Dragonfrutina Dolphinita",
+	"Chicleteira Bicicleteira",
+	"Tralaledon",
+	"Los Primos",
+	"Ketupat Kepat"
+}
+wait(1)
+local function v5(z,hop,list,power,ult)
+	local r = z or 1
+	print(power,ult)
+	if states.IsIn then return end
+	states.IsIn = true
+	local char = Player.Character
+	if not char then
+		states.IsIn = false
+		return
+	end
+	local root = char:WaitForChild("HumanoidRootPart")
+	root.CFrame = k
+	task.wait(0.5)
+	for _=1,5,1 do
+		game:GetService("ReplicatedStorage")
+			:WaitForChild("Shared")
+			:WaitForChild("Packages")
+			:WaitForChild("Network")
+			:WaitForChild("rev_KickEvent")
+			:FireServer(power*3, ult)
+		wait(0.4)
+	end		
+	if list then
+		local z = game.Players.LocalPlayer:GetAttribute("InGame")
+		if z then
+			local m = string.split(z,",")
+
+			local HttpService = game:GetService("HttpService")
+			local data = HttpService:JSONEncode({
+				content = "Item added: " .. z
+			})
+			if Values.Webhook~="" then
+				request({
+					Url = Values.Webhook,
+					Method = "POST",
+					Headers = { ["Content-Type"] = "application/json" },
+					Body = data
+				})
+			end
+
+
+
+
+
+
+
+
+
+
+
+
+			if not table.find(top,m[1]) then
+				--[[
+				
+				game.Players.LocalPlayer.Character.Humanoid.Health = 0
+				wait(4)
+				states.IsIn=false
+
+				v5(1,true,top,power)
+
+				]]
+				while wait() do
+					TPReturner()				
+				end	
+			end
+
+
+
+
+
+			wait(22)
+
+			wait(2)
+			root.CFrame *= CFrame.new(0,0,-250*3.5)
+
+			local startPos = root.Position
+			local targetPos = k.Position
+			local segments = 5
+			for i = 1, segments do
+				if not states.AutoFarm then break end
+				local nextPos = startPos:Lerp(targetPos, i / segments)
+				WalkTo(nextPos)
+			end
+
+			states.IsIn = false
+			if states.AutoFarm then
+				task.wait(0.5)
+				v5(1,hop,list,power)
+			end
+		end
+	end
+end
+
+local sectionv2= AutoPlay:AddSection("Hop")
+sectionv2:AddToggle("Hop Method", {
+	Title = "Hop Method",
+	Default = true,
+	Callback = function(v)
+
+		states.Hop = v
+		SaveSettings()
+	end
+})
+local section = AutoPlay:AddSection("Auto Farm")
+
+section:AddToggle("AutoFarmToggle", {
+	Title = "Auto Farm",
+	Default = states.AutoFarm,
+	Callback = function(v)
+		states.AutoFarm = v
+		SaveSettings()
+		if v and not states.IsIn then
+			v5(1,states.Hop,top,1)
+		end
+	end
+})
+
+local sectionv3= AutoPlay:AddSection("Auto Farm Events")
+for i, n5 in pairs(Values.Events) do
+	print(i)
+	sectionv3:AddToggle("AutoFarm "..tostring(i) .. " Event", {
+		Title = "Auto Farm "..i .." Event",
+		Default = states.AutoFarmEvents[i],
+		Callback = function(v)
+			states.AutoFarmEvents[i] = v
+			SaveSettings()
+			if v and not states.IsIn then
+				for o,v57 in pairs(n5) do
+					if not game.Players.LocalPlayer.Backpack:FindFirstChild(v57.Name) then
+						print(v57.Name)
+
+						v5(1,states.Hop,{v57.Name, v57.Power},v57.Power,v57.Ultimate or 1)
+						wait(1)	
+					end
+				end
+
+			end
+		end
+	})
+end
+
+local Webhook = Window:AddTab({ Title = "Manage Webhook", Icon = "" })
+local section = Webhook:AddSection("Add Webhook")
+local textbox =Webhook:AddTextbox(nil,{
+	Title="Webhook AutoFarm",
+	PlaceHolder="Discord Url",
+	Callback=function(d)
+		Values.Webhook=d
+	end,
+})
+
+wait(15)
+if not game:GetService("Players"):GetAttribute("InGame") then
+	while wait() do
+	TPReturner()
+	end
+	end
