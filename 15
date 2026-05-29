@@ -433,38 +433,39 @@ local function v5(z,hop,list,power,ult)
 			local m = string.split(z,",")
 
 			local HttpService = game:GetService("HttpService")
-			local data = HttpService:JSONEncode({
-				content = "Item added: " .. z
-			})
-			local function SendWebhook(data)
+
+			local function SendWebhook(payload)
 				local success, response = pcall(function()
 					return request({
 						Url = Values.Webhook,
 						Method = "POST",
-						Headers = { ["Content-Type"] = "application/json" },
-						Body = game:GetService("HttpService"):JSONEncode(data)
+						Headers = {
+							["Content-Type"] = "application/json"
+						},
+						Body = HttpService:JSONEncode(payload)   -- Encode only once
 					})
 				end)
 
-				if success and response.Success then
-					print("✅ Webhook sent")
+				if success and response and response.Success then
+					print("✅ Webhook sent successfully")
 				else
-					warn("❌ Webhook error:", response)
+					warn("❌ Webhook failed:", response)
 				end
 			end
 
-			-- שימוש:
+			-- ==================== USAGE ====================
+
+			local itemName = z  -- Make sure 'z' has a value
+
 			SendWebhook({
-				content =data,
+				content = "Item added: " .. itemName,
 				embeds = {{
 					title = "Item Added",
-							color = 16711680
+					description = "A new item has been added: **" .. itemName .. "**",
+					color = 16711680,  -- Red color
+					timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
 				}}
 			})
-
-
-
-
 
 
 
